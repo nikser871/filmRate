@@ -5,11 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
     private int id;
     @Email
@@ -19,4 +23,5 @@ public class User {
     private String login;
     private String name;
     private LocalDate birthday;
+    private Set<Long> friends = new HashSet<>();
 }

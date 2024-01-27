@@ -1,15 +1,16 @@
 package com.example.filmorate.controller;
 
 
-import com.example.filmorate.exception.FilmException;
-import com.example.filmorate.exception.UserException;
 import com.example.filmorate.model.Film;
-import com.example.filmorate.validation.FilmValidation;
+import com.example.filmorate.service.FilmService;
+import com.example.filmorate.storage.film.FilmStorage;
+import com.example.filmorate.storage.film.InMemoryFilmStorage;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -17,39 +18,52 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/films")
 public class FilmController {
-    Map<Integer, Film> films = new HashMap<>();
+
+    private final FilmStorage filmStorage;
+    private final FilmService service;
+
+    @Autowired
+    public FilmController(InMemoryFilmStorage filmStorage, FilmService service) {
+        this.filmStorage = filmStorage;
+        this.service = service;
+    }
 
 
     @PostMapping
-    public Film createFilm(@Valid @RequestBody Film film) throws FilmException {
-
-        FilmValidation.checkName(film.getName());
-        FilmValidation.checkDescription(film.getDescription());
-        FilmValidation.checkDataRelease(film.getReleaseDate());
-        FilmValidation.checkDuration(film.getDuration());
-
-        log.info("Object: {}", film);
-
-        films.put(film.getId(), film);
-        return film;
+    public Film createFilm(@Valid @RequestBody Film film) {
+        return filmStorage.createFilm(film);
     }
 
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) throws FilmException {
-
-        FilmValidation.checkName(film.getName());
-        FilmValidation.checkDescription(film.getDescription());
-        FilmValidation.checkDataRelease(film.getReleaseDate());
-        FilmValidation.checkDuration(film.getDuration());
-
-        log.info("Object: {}", film);
-        films.put(film.getId(), film);
-        return film;
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        return filmStorage.updateFilm(film);
     }
 
     @GetMapping
     public Map<Integer, Film> getAllFilms() {
-        return films;
+        return filmStorage.getAllFilms();
     }
+
+    @PutMapping(value = "/{id}/like/{userId}")
+    public String likeTheMovie(@PathVariable int id, @PathVariable int userId) {
+        return service.addFollower(id, userId);
+    }
+
+    @DeleteMapping(value = "/{id}/like/{userId}")
+    public String deleteLike(@PathVariable int id, @PathVariable int userId) {
+        return service.deleteFollower(id, userId);
+    }
+
+    @GetMapping (value = "/popular")
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") String count){
+        return service.getTopFilms(Integer.parseInt(count));
+    }
+
+
+
+
+    // Add Methods!!!!!!!
+
+
 }
