@@ -23,7 +23,6 @@ public class InMemoryUserStorage implements UserStorage {
         UserValidation.checkBirthday(user.getBirthday());
 
         UserValidation.checkName(user);
-
         log.info("Object: {}", user);
 
         users.put(user.getId(), user);

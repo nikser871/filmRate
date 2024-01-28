@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Data
 @RequiredArgsConstructor
 public class User {
+    @NotNull
     private int id;
     @Email
     private String email;
