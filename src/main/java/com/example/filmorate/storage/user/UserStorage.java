@@ -1,14 +1,29 @@
 package com.example.filmorate.storage.user;
 
 import com.example.filmorate.model.User;
-import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.Optional;
 
-@Component
+
 public interface UserStorage {
     User createUser(User user);
     User updateUser(User user);
-    Map<Integer, User> getAllUsers();
+    Collection<User> getAllUsers();
+
+    void likeFilm(int userId, int filmId);
+    String deleteLikeFilm(int userId, int filmId);
+
+    String addFriend(int firstId, int secondId);
+
+    String deleteFriend(int firstId, int secondId);
+
+    Collection<User> getFriends(int userId);
+
+    Collection<User> getFollowersByFilmId(int filmId);
+
+    Optional<User> getUserById(int userId);
+
+
 
 }

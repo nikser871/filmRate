@@ -1,64 +1,48 @@
 package com.example.filmorate.service;
 
 import com.example.filmorate.model.User;
-import com.example.filmorate.storage.user.InMemoryUserStorage;
 import com.example.filmorate.storage.user.UserStorage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class UserService {
 
+
     private final UserStorage userStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage userStorage) {
+    public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
 
     public String addFriend(int id1, int id2) {
-        userStorage.getAllUsers().get(id1).getFriends().add((long) id2);
+        userStorage.addFriend(id1, id2);
         return "Well done!!!";
     }
 
     public String deleteFriend(int id1, int id2) {
-        userStorage.getAllUsers().get(id1).getFriends().remove((long) id2);
+        userStorage.deleteFriend(id1, id2);
         return "Well delete!!!";
     }
 
-    public List<User> getCommonFriends(int id1, int id2) {
-        List<Long> ids = userStorage.getAllUsers().get(id1)
-                .getFriends()
-                .stream()
-                .filter(x -> userStorage.getAllUsers().get(id2).getFriends().contains(x)).toList();
+    public Collection<User> getFriends(int userId) {
+        return userStorage.getFriends(userId);
+    }
 
-        List<User> result = new ArrayList<>();
+    public Collection<User> getCommonFriends(int id1, int id2) {
+        List<User> friendsUser1 = (List<User>) userStorage.getFriends(id1);
+        List<User> friendsUser2 = (List<User>) userStorage.getFriends(id2);
+        System.out.println("sdasdasdasdasd");
 
-        for (long a: ids
-             ) {
-            result.add(userStorage.getAllUsers().get((int) a));
-        }
-
-        return result;
+        return friendsUser2.stream()
+                .filter(friendsUser1::contains)
+                .toList();
 
     }
 
-    public List<User> getFriends(int userID) {
-        Set<Long> idFriends = userStorage.getAllUsers().get(userID).getFriends();
-        List<User> result = new ArrayList<>();
-        for (long a: idFriends
-        ) {
-            result.add(userStorage.getAllUsers().get((int) a));
-        }
-        return result;
-    }
 
 }

@@ -2,45 +2,35 @@ package com.example.filmorate.service;
 
 import com.example.filmorate.model.Film;
 import com.example.filmorate.storage.film.FilmStorage;
-import com.example.filmorate.storage.film.InMemoryFilmStorage;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
 
+    @Autowired
     private final FilmStorage filmStorage;
 
-    @Autowired
-    public FilmService(InMemoryFilmStorage userStorage) {
-        this.filmStorage = userStorage;
+
+    public FilmService(FilmStorage filmStorage) {
+        this.filmStorage = filmStorage;
     }
 
-    public String addFollower(int filmId, long userId) {
-        filmStorage.getAllFilms().get(filmId).getFollowers().add(userId);
-        return "Все прошло отлично!!!";
-    }
-
-    public String deleteFollower(int filmId, int userId) {
-        filmStorage.getAllFilms().get(filmId).getFollowers().remove((long) userId);
-        return "Film has removed from list!!!";
-    }
-
-    public List<Film> getTopFilms(int count) {
-        return filmStorage.getAllFilms()
-                .values()
+    public Collection<Film> getTopFilms(int count) {
+        List<Film> list = filmStorage.getAllFilms().stream().toList();
+        return list
                 .stream()
-                .sorted(Comparator.comparingInt(x -> -x.getFollowers().size()))
+                .sorted(Comparator.comparing(x -> filmStorage.getCountOfFollowers(x.getId()).orElse(0),
+                        Comparator.reverseOrder()))
                 .limit(count)
                 .toList();
     }
+
+
 
 
 }

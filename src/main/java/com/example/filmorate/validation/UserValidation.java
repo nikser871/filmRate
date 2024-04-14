@@ -3,9 +3,9 @@ package com.example.filmorate.validation;
 import com.example.filmorate.exception.UserException;
 import com.example.filmorate.model.User;
 
-import java.time.Instant;
+
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
+
 
 public class UserValidation {
     public static void checkEmail(String email) throws UserException {

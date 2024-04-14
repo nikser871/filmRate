@@ -5,13 +5,14 @@ import com.example.filmorate.model.Film;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FilmValidationTest {
 
     private static final Film rightFilm = new Film(1, "Sun", "Hello!",
-            LocalDate.of(2000, 12, 12), 120);
+            LocalDate.of(2000, 12, 12), 120, List.of(1, 2), 1);
 
     private static final Film wrongFilm = new Film(1, null, "DKJFDJFKDJKFDFKSDFPDJKDJSKF" +
             "DKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJKDKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJK" +
@@ -20,7 +21,7 @@ class FilmValidationTest {
             "DKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJKDKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJK" +
             "DKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJKDKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJK" +
             "DKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJKDKJFDJFKDJKFDFKSDFPDJKDJSKFJSDFJKSDJFKDSKFJSJKJSDFJKSDJFKDSKFJSJK",
-            LocalDate.of(1800, 12, 12), -1);
+            LocalDate.of(1800, 12, 12), -1, List.of(1, 2), 1);
 
     @Test
     void checkName() {

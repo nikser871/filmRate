@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserValidationTest {
 
-    private static final User rightUser = new User(1, "1093se@gmail.com", "BosSer", null,
-            LocalDate.of(2000, Month.DECEMBER, 28));
+    private static final User rightUser = new User(1, "BosSer", "ser",
+            LocalDate.of(2000, Month.DECEMBER, 28), "1093se@gmail.com");
 
-    private static final User wrongUser1 = new User(1, "1093segmail.com", "S sd", "SER",
-            LocalDate.of(2000, Month.DECEMBER, 28));
-    private static final User wrongUser2 = new User(1, null, null, "SER",
-            LocalDate.of(2050, Month.DECEMBER, 28));
+    private static final User wrongUser1 = new User(1,"SER" , "  ",
+            LocalDate.of(2000, Month.DECEMBER, 28), "1093segmail.com");
+    private static final User wrongUser2 = new User(1, "SER", null,
+            LocalDate.of(2050, Month.DECEMBER, 28), null);
 
     @Test
     void checkEmail() throws UserException {

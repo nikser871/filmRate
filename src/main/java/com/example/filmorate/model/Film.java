@@ -5,23 +5,27 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Film {
+    @Id
     private int id;
     @NotNull(message = "Name is null")
     @NotBlank(message = "Name is null")
     private String name;
     private String description;
+    @NotNull(message = "releaseDate is null")
     private LocalDate releaseDate;
     private int duration;
-    private Set<Long> followers = new HashSet<>();
+    private List<Integer> genresId;
+    private int mpaId;
+
 
 }

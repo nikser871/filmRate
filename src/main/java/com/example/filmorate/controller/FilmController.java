@@ -4,14 +4,13 @@ package com.example.filmorate.controller;
 import com.example.filmorate.model.Film;
 import com.example.filmorate.service.FilmService;
 import com.example.filmorate.storage.film.FilmStorage;
-import com.example.filmorate.storage.film.InMemoryFilmStorage;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
+import java.util.Optional;
 
 
 @Slf4j
@@ -23,7 +22,7 @@ public class FilmController {
     private final FilmService service;
 
     @Autowired
-    public FilmController(InMemoryFilmStorage filmStorage, FilmService service) {
+    public FilmController(FilmStorage filmStorage, FilmService service) {
         this.filmStorage = filmStorage;
         this.service = service;
     }
@@ -41,29 +40,25 @@ public class FilmController {
     }
 
     @GetMapping
-    public Map<Integer, Film> getAllFilms() {
+    public Collection<Film> getAllFilms() {
         return filmStorage.getAllFilms();
     }
 
-    @PutMapping(value = "/{id}/like/{userId}")
-    public String likeTheMovie(@PathVariable int id, @PathVariable int userId) {
-        return service.addFollower(id, userId);
-    }
-
-    @DeleteMapping(value = "/{id}/like/{userId}")
-    public String deleteLike(@PathVariable int id, @PathVariable int userId) {
-        return service.deleteFollower(id, userId);
-    }
 
     @GetMapping (value = "/popular")
-    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") String count){
+    public Collection<Film> getPopularFilms(@RequestParam(defaultValue = "10") String count){
         return service.getTopFilms(Integer.parseInt(count));
     }
 
+    @GetMapping (value = "/film/{id}")
+    public Optional<Film> getUserById(@PathVariable int id) {
+        return filmStorage.getFilmById(id);
+    }
 
 
 
-    // Add Methods!!!!!!!
+
+
 
 
 }
